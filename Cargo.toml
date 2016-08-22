@@ -4,7 +4,7 @@ name = "pmem"
 version = "0.0.0"
 
 description = "Rust bindings for the NVM Library http://pmem.io"
-keywords = ["pmem", "persistent memory", "nvm"]
+keywords = ["pmem", "persistent", "memory", "nvm"]
 
 repository = "https://github.com/icorderi/rust-pmem"
 homepage = "https://github.com/icorderi/rust-pmem"
