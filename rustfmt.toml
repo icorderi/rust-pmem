@@ -1,0 +1,89 @@
+max_width = 110
+
+ideal_width = 100
+
+# Maximum width of the args of a function call before falling back to vertical formatting
+fn_call_width = 100
+
+# Maximum width in the body of a struct lit before falling back to vertical formatting
+struct_lit_width = 60
+
+# Maximum width in the body of a struct variant before falling back to vertical formatting
+struct_variant_width = 60
+
+#  Put single-expression functions on a single line
+fn_single_line = true
+
+# Argument density in functions - [Compressed|Tall|CompressedIfEmpty|Vertical] Default: Tall
+# fn_args_density = ...
+
+# Layout of function arguments - [Visual|Block|BlockAlways] Default: Visual
+# fn_args_layout = ...
+
+# Indent on function arguments - [Inherit|Tabbed|Visual] Default: Visual
+# fn_arg_indent = ...
+
+# Density of a where clause - [Compressed|Tall|CompressedIfEmpty|Vertical] Default: CompressedIfEmpty
+# where_density = ...
+
+# Indentation of a where clause - [Inherit|Tabbed|Visual] Default: Tabbed
+where_indent = "Visual" # not sure what this does
+
+# Element layout inside a where clause - [Vertical|Horizontal|HorizontalVertical|Mixed] Default: Vertical
+where_layout = "Vertical"
+
+# Indentation style of a where predicate - [Inherit|Tabbed|Visual] Default: Visual
+# where_pred_indent = ...
+
+# Indentation of generics - [Inherit|Tabbed|Visual] Default: Visual
+# generics_indent = ...
+
+# Style of struct definition - [Visual|Block] Default: Block
+struct_lit_style = "Visual"
+
+# Multiline style on literal structs - [PreferSingle|ForceMulti] Default: PreferSingle
+# struct_lit_multiline_style = ...
+
+# Report all, none or unnumbered occurrences of TODO in source file comments - [Always|Unnumbered|Never] Default: Never
+# report_todo = ...
+
+# Report all, none or unnumbered occurrences of FIXME in source file comments - [Always|Unnumbered|Never] Default: Never
+# report_fixme = ...
+
+# Indent on chain base - [Inherit|Tabbed|Visual] Default: Tabbed
+# doesn't seem to work...
+chain_base_indent = "Tabbed"
+
+# Indent of chain - [Inherit|Tabbed|Visual] Default: Tabbed
+# doesn't seem to work...
+chain_indent = "Visual"
+
+# Allow last call in method chain to break the line - <boolean> Default: true
+# chains_overflow_last = ...
+
+# Reorder import statements alphabetically - <boolean> Default: false
+# reorder_imports = ...
+
+# Put else on same line as closing brace for if statements - <boolean> Default: false
+# single_line_if_else = ...
+
+# Format string literals where necessary - <boolean> Default: true
+format_strings = false
+
+# Use tab characters for indentation, spaces for alignment - <boolean> Default: false
+hard_tabs = false
+
+# Break comments to fit on the line - <boolean> Default: false
+# wrap_comments = ...
+
+# Convert /* */ comments to // comments where possible
+# normalise_comments = ...
+
+# Wrap multiline match arms in blocks - <boolean> Default: true
+# wrap_match_arms = ...
+
+# How many lines a closure must have before it is block indented. -1 means never use block indent. - <signed integer> Default: 5
+# closure_block_indent_threshold = ...
+
+# Replace uses of the try! macro by the ? shorthand - <boolean> Default: false
+# use_try_shorthand = true

@@ -1,0 +1,15 @@
+[package]
+authors = ["Ignacio Corderi <icorderi@msn.com>"]
+name = "pmem"
+version = "0.0.0"
+
+description = "Rust bindings for the NVM Library http://pmem.io"
+keywords = ["pmem", "persistent memory", "nvm"]
+
+repository = "https://github.com/icorderi/rust-pmem"
+homepage = "https://github.com/icorderi/rust-pmem"
+documentation = "https://icorderi.github.io/rust-pmem/index.html"
+
+license = "MIT/Apache-2.0"
+
+[dependencies]
