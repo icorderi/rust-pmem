@@ -2,6 +2,7 @@ use ::std::ffi::CString;
 use ::std::path::Path;
 use ::std::io;
 
+use ::libc::iovec;
 use ::libc::{size_t, mode_t};
 use ::libc::{c_void, c_int};
 
@@ -67,6 +68,31 @@ impl Log {
         } else {
             Err(io::Error::last_os_error())
         }
+    }
+
+    pub fn append_many<T: AsRef<[u8]>>(&mut self, entries: &[T]) -> Result<(), io::Error> {
+        let count = entries.len();
+        let mut io_vecs = Vec::with_capacity(count);
+        for entry in entries {
+            let buf = entry.as_ref();
+            io_vecs.push(iovec { iov_base: buf.as_ptr() as *mut c_void,
+                                 iov_len: buf.len() as size_t, });
+        }
+
+        let r = unsafe {
+            let io_vecs = io_vecs.as_slice().as_ptr() as *const iovec;
+            ffi::pmemlog_appendv(self.inner, io_vecs, count as c_int)
+        };
+
+        if r == 0 {
+            Ok(())
+        } else {
+            Err(io::Error::last_os_error())
+        }
+    }
+
+    pub fn len(&self) -> usize {
+        unsafe { ffi::pmemlog_tell(self.inner) as usize }
     }
 
     pub fn capacity(&self) -> usize { unsafe { ffi::pmemlog_nbyte(self.inner) as usize } }

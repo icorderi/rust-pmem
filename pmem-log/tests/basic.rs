@@ -26,6 +26,21 @@ fn append() {
 }
 
 #[test]
+fn append_many() {
+    let path = Path::new("/tmp/test-append-many.pmemlog");
+    if path.exists() {
+        fs::remove_file(&path).unwrap();
+    }
+    let mut p = Log::create(path, 2 * 1024 * 1024).unwrap();
+    p.append_many(&["append","many", "foo"]).unwrap();
+
+    p.walk(4, |t| {
+        println!("Found: {}", String::from_utf8_lossy(t));
+        Some(())
+    });
+}
+
+#[test]
 fn open() {
     let path = Path::new("/tmp/test-open.pmemlog");
     if path.exists() {
@@ -40,6 +55,32 @@ fn open() {
     let mut p = Log::open(path).unwrap();
     p.append("Welcome back").unwrap();
 }
+
+#[test]
+fn capacity() {
+    let path = Path::new("/tmp/test-capacity.pmemlog");
+    if path.exists() {
+        fs::remove_file(&path).unwrap();
+    }
+    let p = Log::create(path, 2 * 1024 * 1024).unwrap();
+    p.capacity();
+}
+
+#[test]
+fn len() {
+    let path = Path::new("/tmp/test-len.pmemlog");
+    if path.exists() {
+        fs::remove_file(&path).unwrap();
+    }
+    let mut p = Log::create(path, 2 * 1024 * 1024).unwrap();
+    let len = p.len();
+
+    p.append("four").unwrap();
+
+    assert!(p.len() == len + 4);
+}
+
+
 
 #[test]
 fn walk() {
