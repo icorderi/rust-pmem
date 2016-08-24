@@ -1,0 +1,11 @@
+[target.x86_64-unknown-linux-gnu.pmem]
+rustc-link-search = ["/home/travis/nvml/lib"]
+rustc-link-lib = ["pmem"]
+
+[target.x86_64-unknown-linux-gnu.pmemlog]
+rustc-link-search = ["/home/travis/nvml/lib"]
+rustc-link-lib = ["pmemlog"]
+
+[target.x86_64-unknown-linux-gnu.pmemobj]
+rustc-link-search = ["/home/travis/nvml/lib"]
+rustc-link-lib = ["pmemobj"]

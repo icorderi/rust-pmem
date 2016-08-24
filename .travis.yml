@@ -12,6 +12,15 @@ branches:
   only:
   - master
 
+cache:
+  cargo: true
+  directories:
+  - $HOME/nvml
+
+install:
+- sh ./travis/install-pmem.sh
+- sh ./travis/configure-cargo.sh
+
 before_script:
 - |
   pip install 'travis-cargo<0.2' --user &&
