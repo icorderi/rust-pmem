@@ -1,25 +1,15 @@
 [package]
-name = "pmem"
+name = "pmem-blk"
 version = "0.0.1"
 authors = ["Ignacio Corderi <icorderi@msn.com>"]
 license = "MIT/Apache-2.0"
 
-keywords = ["pmem", "persistent", "memory", "nvm"]
 description = "Rust bindings for the NVM Library http://pmem.io"
 
 repository = "https://github.com/icorderi/rust-pmem"
 homepage = "https://github.com/icorderi/rust-pmem"
-documentation = "https://icorderi.github.io/rust-pmem/index.html"
-
-links = "pmem"
-build = "build.rs"
-
-[workspace]
-members = [
-  "pmem-obj",
-  "pmem-log",
-  "pmem-blk",
-]
+documentation = "https://icorderi.github.io/rust-pmem/pmem_log/"
 
 [dependencies]
+pmem = { path = "..", version = "0.0" }
 libc = "0.2"

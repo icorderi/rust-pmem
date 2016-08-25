@@ -31,10 +31,12 @@ script:
 - cargo test
 - cargo test --manifest-path pmem-obj/Cargo.toml
 - cargo test --manifest-path pmem-log/Cargo.toml
+- cargo test --manifest-path pmem-blk/Cargo.toml
 
 - cargo doc --no-deps
 - cargo doc --no-deps --manifest-path pmem-obj/Cargo.toml
 - cargo doc --no-deps --manifest-path pmem-log/Cargo.toml
+- cargo doc --no-deps --manifest-path pmem-blk/Cargo.toml
 
 after_success:
 - travis-cargo doc-upload
