@@ -17,6 +17,7 @@ build = "build.rs"
 [workspace]
 members = [
   "pmem-obj",
+  "pmem-log",
 ]
 
 [dependencies]

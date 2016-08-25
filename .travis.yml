@@ -27,9 +27,14 @@ before_script:
   export PATH=$HOME/.local/bin:$PATH
 
 script:
-- travis-cargo build
-- travis-cargo test
-- travis-cargo doc
+- cargo build
+- cargo test
+- cargo test --manifest-path pmem-obj/Cargo.toml
+- cargo test --manifest-path pmem-log/Cargo.toml
+
+- cargo doc --no-deps
+- cargo doc --no-deps --manifest-path pmem-obj/Cargo.toml
+- cargo doc --no-deps --manifest-path pmem-log/Cargo.toml
 
 after_success:
 - travis-cargo doc-upload
