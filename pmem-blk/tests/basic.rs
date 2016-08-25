@@ -6,7 +6,7 @@ use ::std::path::Path;
 use ::pmem_blk::BlkPool;
 
 
-// #[test] - ignore for now
+#[test]
 fn create() {
     let path = Path::new("/tmp/test-create.pmemblk");
     if path.exists() {
@@ -15,7 +15,7 @@ fn create() {
     let _p: BlkPool = BlkPool::create(path, 64 * 1024, 10 * 1024 * 1024).unwrap();
 }
 
-// #[test] - ignore for now
+#[test]
 fn open() {
     let path = Path::new("/tmp/test-open.pmemblk");
     if path.exists() {
@@ -29,7 +29,7 @@ fn open() {
     let _p = BlkPool::open(path).unwrap();
 }
 
-// #[test] - ignore for now
+#[test]
 fn version() {
     BlkPool::check_version(1,1).unwrap();
 }
