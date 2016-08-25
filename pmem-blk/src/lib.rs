@@ -1,6 +1,4 @@
-//! # FFI bindings to **libpmemblk**
-//!
-//! The **pmem-blk** library supports arrays of pmem-resident blocks, all the same size, that are atomically updated.
+//! Arrays of pmem-resident blocks, all the same size, that are atomically updated.
 //! For example, a program keeping a cache of fixed-size objects in pmem might find this library useful.
 //!
 //! > This is **not** an official port of the NVM Library.

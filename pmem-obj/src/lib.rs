@@ -1,6 +1,4 @@
-//! # FFI bindings to **libpmemobj**
-//!
-//! The **pmem-obj** library provides a transactional object store, providing memory allocation,
+//! Transactional object store, providing memory allocation,
 //! transactions, and general facilities for persistent memory programming.
 //!
 //! Developers new to persistent memory probably want to start with this library.

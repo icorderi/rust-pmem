@@ -1,6 +1,4 @@
-//! # FFI bindings to **libpmemlog**
-//!
-//! The **pmem-log** library provides a pmem-resident log file.
+//! A pmem-resident log file.
 //! This is useful for programs like databases that append frequently to a log file.
 //!
 //! > This is **not** an official port of the NVM Library.
