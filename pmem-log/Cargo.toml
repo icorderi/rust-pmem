@@ -4,12 +4,16 @@ version = "0.0.1"
 authors = ["Ignacio Corderi <icorderi@msn.com>"]
 license = "MIT/Apache-2.0"
 
-description = "Rust bindings for the NVM Library http://pmem.io"
+description = """
+Rust abstractions over `pmemlog-sys`.
+
+A _pmem-resident_ log file.
+"""
 
 repository = "https://github.com/icorderi/rust-pmem"
-homepage = "https://github.com/icorderi/rust-pmem"
+homepage = "https://github.com/icorderi/rust-pmem/pmem-log/"
 documentation = "https://icorderi.github.io/rust-pmem/pmem_log/"
 
 [dependencies]
-pmem = { path = "..", version = "0.0" }
+pmemlog-sys = { path = "../sys/pmemlog-sys", version = "0.0" }
 libc = "0.2"

@@ -4,7 +4,7 @@ use ::std::io;
 
 use ::libc::{size_t, mode_t};
 
-use ffi::{self, PMEMobjpool};
+use pmemobj_sys::{self as ffi, PMEMobjpool};
 
 
 pub struct ObjPool {

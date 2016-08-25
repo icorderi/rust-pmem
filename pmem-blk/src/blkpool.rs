@@ -4,7 +4,7 @@ use ::std::io;
 
 use ::libc::c_uint;
 use ::libc::{size_t, mode_t};
-use ffi::{self, PMEMblkpool};
+use ::pmemblk_sys::{self as ffi, PMEMblkpool};
 
 
 pub struct BlkPool {

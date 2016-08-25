@@ -1,12 +1,21 @@
-//! #include <libpmemobj.h>
+//! # FFI bindings to **libpmemlog**
 //!
-//! cc -std=gnu99 ... -lpmemobj -lpmem
+//! The **libpmemlog** library provides a pmem-resident log file.
+//! This is useful for programs like databases that append frequently to a log file.
+//!
+//! > This is **not** an official port of the NVM Library.
+//! >
+//! > The official **libpmemlog** documentation can be found at: [http://pmem.io/nvml/libpmemlog/](http://pmem.io/nvml/libpmemlog/)
+
+extern crate libc;
 
 use ::libc::iovec;
 use ::libc::{size_t, mode_t};
 use ::libc::{c_void, c_char, c_int, c_longlong};
 
+
 pub enum PMEMlogpool {}
+
 
 #[allow(dead_code)]
 #[link(name = "pmemlog")]

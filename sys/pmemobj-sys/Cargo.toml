@@ -1,0 +1,15 @@
+[package]
+name = "pmemobj-sys"
+version = "0.0.1"
+authors = ["Ignacio Corderi <icorderi@msn.com>"]
+license = "MIT/Apache-2.0"
+
+keywords = ["libpmem", "pmem", "persistent", "memory", "nvm", "nvml", "ffi", "pmemlog", "libpmemlog"]
+description = "FFI bindings to **libpmemobj**"
+
+repository = "https://github.com/icorderi/rust-pmem"
+homepage = "https://github.com/icorderi/rust-pmem/pmemobj-sys/"
+documentation = "https://icorderi.github.io/rust-pmem/pmemobj_sys/"
+
+[dependencies]
+libc = "0.2"

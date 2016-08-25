@@ -1,11 +1,15 @@
-//! libpmemobj bindings
+//! # FFI bindings to **libpmemblk**
 //!
-//! Official documentation at: http://pmem.io/nvml/libpmemobj/libpmemobj.3.html
+//! The **pmem-blk** library supports arrays of pmem-resident blocks, all the same size, that are atomically updated.
+//! For example, a program keeping a cache of fixed-size objects in pmem might find this library useful.
+//!
+//! > This is **not** an official port of the NVM Library.
+//! >
+//! > The official **libpmemblk** documentation can be found at: [http://pmem.io/nvml/libpmemblk/](http://pmem.io/nvml/libpmemblk/)
 
-extern crate pmem;
+extern crate pmemblk_sys;
 extern crate libc;
 
-mod ffi;
 pub mod blkpool;
 
 pub use blkpool::BlkPool;

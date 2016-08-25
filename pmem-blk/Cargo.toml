@@ -4,12 +4,17 @@ version = "0.0.1"
 authors = ["Ignacio Corderi <icorderi@msn.com>"]
 license = "MIT/Apache-2.0"
 
-description = "Rust bindings for the NVM Library http://pmem.io"
+description = """
+Rust abstractions over `pmemblk-sys`.
+
+Arrays of _pmem-resident_ blocks, all the same size, that are atomically updated.
+For example, a program keeping a cache of fixed-size objects in _pmem_ might find this library useful.
+"""
 
 repository = "https://github.com/icorderi/rust-pmem"
-homepage = "https://github.com/icorderi/rust-pmem"
-documentation = "https://icorderi.github.io/rust-pmem/pmem_log/"
+homepage = "https://github.com/icorderi/rust-pmem/pmem-blk/"
+documentation = "https://icorderi.github.io/rust-pmem/pmem_blk/"
 
 [dependencies]
-pmem = { path = "..", version = "0.0" }
+pmemblk-sys = { path = "../sys/pmemblk-sys", version = "0.0" }
 libc = "0.2"

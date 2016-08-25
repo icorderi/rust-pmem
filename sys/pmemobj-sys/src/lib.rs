@@ -1,6 +1,15 @@
-//! #include <libpmemobj.h>
+//! # FFI bindings to **libpmemobj**
 //!
-//! cc -std=gnu99 ... -lpmemobj -lpmem
+//! The **libpmemobj** library provides a transactional object store, providing memory allocation,
+//! transactions, and general facilities for persistent memory programming.
+//!
+//! Developers new to persistent memory probably want to start with this library.
+//!
+//! > This is **not** an official port of the NVM Library.
+//! >
+//! > The official **libpmemobj** documentation can be found at: [http://pmem.io/nvml/libpmemobj/](http://pmem.io/nvml/libpmemobj/)
+
+extern crate libc;
 
 use ::libc::{size_t, mode_t};
 use ::libc::{c_void, c_char, c_int};

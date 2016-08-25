@@ -1,11 +1,17 @@
-//! libpmemobj bindings
+//! # FFI bindings to **libpmemobj**
 //!
-//! Official documentation at: http://pmem.io/nvml/libpmemobj/libpmemobj.3.html
+//! The **pmem-obj** library provides a transactional object store, providing memory allocation,
+//! transactions, and general facilities for persistent memory programming.
+//!
+//! Developers new to persistent memory probably want to start with this library.
+//!
+//! > This is **not** an official port of the NVM Library.
+//! >
+//! > The official **libpmemobj** documentation can be found at: [http://pmem.io/nvml/libpmemobj/](http://pmem.io/nvml/libpmemobj/)
 
-extern crate pmem;
+extern crate pmemobj_sys;
 extern crate libc;
 
-mod ffi;
 pub mod objpool;
 
 pub use objpool::ObjPool;

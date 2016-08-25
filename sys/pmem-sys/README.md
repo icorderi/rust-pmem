@@ -1,13 +1,13 @@
-# pmem-log
+# FFI bindings to **libpmem**
 
-A pmem-resident log file.
-This is useful for programs like databases that append frequently to a log file.
+Following the `*-sys` package conventions,
+the **pmem-sys** crate does not define higher-level abstractions over the native **libpmem** library functions.
 
 ## Dashboard
 
 | Linux CI | Test Coverage | Crate | Documentation |
 |:--------:|:-------------:|:-----:|:-------------:|
-| [![Build Status](https://travis-ci.org/icorderi/rust-pmem.svg?branch=master)](https://travis-ci.org/icorderi/rust-pmem) | [![Coverage Status](https://coveralls.io/repos/icorderi/rust-pmem/badge.svg?branch=master)](https://coveralls.io/r/icorderi/rust-pmem?branch=master) | [![Crate](http://meritbadge.herokuapp.com/pmem-obj)](https://crates.io/crates/pmem-obj) | [![Docs](https://img.shields.io/badge/docs-up--to--date-blue.svg)](https://icorderi.github.io/rust-pmem/pmem-obj/)
+| [![Build Status](https://travis-ci.org/icorderi/rust-pmem.svg?branch=master)](https://travis-ci.org/icorderi/rust-pmem) | [![Coverage Status](https://coveralls.io/repos/icorderi/rust-pmem/badge.svg?branch=master)](https://coveralls.io/r/icorderi/rust-pmem?branch=master) | [![Crate](http://meritbadge.herokuapp.com/pmem-sys)](https://crates.io/crates/pmem-sys) | [![Docs](https://img.shields.io/badge/docs-up--to--date-blue.svg)](https://icorderi.github.io/rust-pmem/pmem_sys/)
 
 ## Usage
 
@@ -24,7 +24,7 @@ This library links with the [NVML](https://github.com/pmem/nvml), you can see th
 
 > This is **not** an official port of the NVM Library.
 >
-> The official **libpmemlog** documentation can be found at: [http://pmem.io/nvml/libpmemlog/](http://pmem.io/nvml/libpmemlog/)
+> The official **libpmem** documentation can be found at: [http://pmem.io/nvml/libpmem/](http://pmem.io/nvml/libpmem/)
 
 ## Contribution
 

@@ -6,7 +6,7 @@ use ::libc::iovec;
 use ::libc::{size_t, mode_t};
 use ::libc::{c_void, c_int};
 
-use ffi::{self, PMEMlogpool};
+use pmemlog_sys::{self as ffi, PMEMlogpool};
 
 pub struct Log {
     inner: *mut PMEMlogpool,

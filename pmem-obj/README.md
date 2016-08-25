@@ -1,6 +1,9 @@
 # pmem-obj
 
-Official documentation: [http://pmem.io/nvml/libpmemobj/](http://pmem.io/nvml/libpmemobj/)
+Transactional object store, providing memory allocation,
+transactions, and general facilities for persistent memory programming.
+
+Developers new to persistent memory probably want to start with this library.
 
 ## Dashboard
 
@@ -18,3 +21,15 @@ Licensed under:
 
 - Apache License, Version 2.0 - [LICENSE-APACHE](../LICENSE-APACHE) ([source](http://www.apache.org/licenses/LICENSE-2.0))
 - MIT license - ([LICENSE-MIT](../LICENSE-MIT) ([source](http://opensource.org/licenses/MIT))
+
+This library links with the [NVML](https://github.com/pmem/nvml), you can see the NVML license [here](https://github.com/pmem/nvml/blob/master/LICENSE).
+
+> This is **not** an official port of the NVM Library.
+>
+> The official **libpmemobj** documentation can be found at: [http://pmem.io/nvml/libpmemobj/](http://pmem.io/nvml/libpmemobj/)
+
+## Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any
+additional terms or conditions.

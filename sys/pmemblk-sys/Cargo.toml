@@ -1,0 +1,15 @@
+[package]
+name = "pmemblk-sys"
+version = "0.0.1"
+authors = ["Ignacio Corderi <icorderi@msn.com>"]
+license = "MIT/Apache-2.0"
+
+keywords = ["libpmem", "pmem", "persistent", "memory", "nvm", "nvml", "ffi", "pmemblk", "libpmemblk"]
+description = "FFI bindings to **libpmemblk**"
+
+repository = "https://github.com/icorderi/rust-pmem"
+homepage = "https://github.com/icorderi/rust-pmem/pmemblk-sys/"
+documentation = "https://icorderi.github.io/rust-pmem/pmemblk_sys/"
+
+[dependencies]
+libc = "0.2"

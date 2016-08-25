@@ -1,13 +1,13 @@
-# pmem-log
+# FFI bindings to **libpmemlog**
 
-A pmem-resident log file.
-This is useful for programs like databases that append frequently to a log file.
+Following the `*-sys` package conventions,
+the **pmemlog-sys** crate does not define higher-level abstractions over the native **libpmemlog** library functions.
 
 ## Dashboard
 
 | Linux CI | Test Coverage | Crate | Documentation |
 |:--------:|:-------------:|:-----:|:-------------:|
-| [![Build Status](https://travis-ci.org/icorderi/rust-pmem.svg?branch=master)](https://travis-ci.org/icorderi/rust-pmem) | [![Coverage Status](https://coveralls.io/repos/icorderi/rust-pmem/badge.svg?branch=master)](https://coveralls.io/r/icorderi/rust-pmem?branch=master) | [![Crate](http://meritbadge.herokuapp.com/pmem-obj)](https://crates.io/crates/pmem-obj) | [![Docs](https://img.shields.io/badge/docs-up--to--date-blue.svg)](https://icorderi.github.io/rust-pmem/pmem-obj/)
+| [![Build Status](https://travis-ci.org/icorderi/rust-pmem.svg?branch=master)](https://travis-ci.org/icorderi/rust-pmem) | [![Coverage Status](https://coveralls.io/repos/icorderi/rust-pmem/badge.svg?branch=master)](https://coveralls.io/r/icorderi/rust-pmem?branch=master) | [![Crate](http://meritbadge.herokuapp.com/pmemlog-sys)](https://crates.io/crates/pmemlog-sys) | [![Docs](https://img.shields.io/badge/docs-up--to--date-blue.svg)](https://icorderi.github.io/rust-pmem/pmemlog_sys/)
 
 ## Usage
 

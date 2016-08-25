@@ -4,12 +4,19 @@ version = "0.0.1"
 authors = ["Ignacio Corderi <icorderi@msn.com>"]
 license = "MIT/Apache-2.0"
 
-description = "Rust bindings for the NVM Library http://pmem.io"
+description = """
+Rust abstractions over `pmemobj-sys`.
+
+Transactional object store, providing memory allocation,
+transactions, and general facilities for persistent memory programming.
+
+Developers new to persistent memory probably want to start with this crate.
+"""
 
 repository = "https://github.com/icorderi/rust-pmem"
-homepage = "https://github.com/icorderi/rust-pmem"
+homepage = "https://github.com/icorderi/rust-pmem/pmem-obj/"
 documentation = "https://icorderi.github.io/rust-pmem/pmem_obj/"
 
 [dependencies]
-pmem = { path = "..", version = "0.0" }
+pmemobj-sys = { path = "../sys/pmemobj-sys", version = "0.0" }
 libc = "0.2"
