@@ -4,7 +4,7 @@ version = "0.0.1"
 authors = ["Ignacio Corderi <icorderi@msn.com>"]
 license = "MIT/Apache-2.0"
 
-keywords = ["libpmem", "pmem", "persistent", "memory", "nvm", "nvml", "ffi", "pmemlog", "libpmemlog"]
+keywords = ["pmemlog", "libpmemlog", "memory", "nvm", "nvml"]
 description = "FFI bindings to **libpmemlog**"
 
 repository = "https://github.com/icorderi/rust-pmem"
