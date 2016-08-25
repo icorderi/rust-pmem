@@ -1,10 +1,10 @@
 [package]
 name = "pmemlog-sys"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Ignacio Corderi <icorderi@msn.com>"]
 license = "MIT/Apache-2.0"
 
-keywords = ["pmemlog", "libpmemlog", "memory", "nvm", "nvml"]
+keywords = ["pmemlog", "libpmemlog", "pmem", "nvm", "nvml"]
 description = "FFI bindings to **libpmemlog**"
 
 repository = "https://github.com/icorderi/rust-pmem"
