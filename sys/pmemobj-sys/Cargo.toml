@@ -11,5 +11,8 @@ repository = "https://github.com/icorderi/rust-pmem"
 homepage = "https://github.com/icorderi/rust-pmem/pmemobj-sys/"
 documentation = "https://icorderi.github.io/rust-pmem/pmemobj_sys/"
 
+links = "pmemobj"
+build = "build.rs"
+
 [dependencies]
 libc = "0.2"

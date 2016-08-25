@@ -11,5 +11,8 @@ repository = "https://github.com/icorderi/rust-pmem"
 homepage = "https://github.com/icorderi/rust-pmem/pmemblk-sys/"
 documentation = "https://icorderi.github.io/rust-pmem/pmemblk_sys/"
 
+links = "pmemblk"
+build = "build.rs"
+
 [dependencies]
 libc = "0.2"

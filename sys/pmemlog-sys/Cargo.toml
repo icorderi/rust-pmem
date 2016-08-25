@@ -11,5 +11,8 @@ repository = "https://github.com/icorderi/rust-pmem"
 homepage = "https://github.com/icorderi/rust-pmem/pmemlog-sys/"
 documentation = "https://icorderi.github.io/rust-pmem/pmemlog_sys/"
 
+links = "pmemlog"
+build = "build.rs"
+
 [dependencies]
 libc = "0.2"
