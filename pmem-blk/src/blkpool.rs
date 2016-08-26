@@ -6,6 +6,7 @@ use ::libc::c_uint;
 use ::libc::{size_t, mode_t};
 use ::pmemblk_sys::{self as ffi, PMEMblkpool};
 
+
 fn errormsg() -> Option<String> {
     unsafe {
         let reason_p = ffi::pmemblk_errormsg();

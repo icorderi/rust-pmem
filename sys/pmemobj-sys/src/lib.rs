@@ -36,4 +36,8 @@ extern "C" {
     pub fn pmemobj_persist(pop: *mut PMEMobjpool, addr: *const c_void, len: size_t);
     pub fn pmemobj_flush(pop: *mut PMEMobjpool, addr: *const c_void, len: size_t);
     pub fn pmemobj_drain(pop: *mut PMEMobjpool);
+
+    // Error handling:
+
+    pub fn pmemobj_errormsg() -> *const c_char;
 }
