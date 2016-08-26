@@ -8,6 +8,30 @@
 extern crate pmemblk_sys;
 extern crate libc;
 
+// Modules
+
 pub mod blkpool;
 
+// Re-exports
+
 pub use blkpool::BlkPool;
+
+// module - lib
+
+use ::std::ffi::CStr;
+
+use ::libc::c_uint;
+use ::pmemblk_sys::{self as ffi};
+
+/// Checks the version of the **libpmemblk** library
+pub fn check_version(major_required: usize, minor_required: usize) -> Result<(), String> {
+    unsafe {
+        let reason_p = ffi::pmemblk_check_version(major_required as c_uint, minor_required as c_uint);
+        if !reason_p.is_null() {
+            let reason = CStr::from_ptr(reason_p).to_owned().into_string().unwrap();
+            Err(reason)
+        } else {
+            Ok(())
+        }
+    }
+}
