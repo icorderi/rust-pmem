@@ -12,7 +12,8 @@ fn create() {
     if path.exists() {
         fs::remove_file(&path).unwrap();
     }
-    let _p: BlkPool = BlkPool::create(path, 64 * 1024, 10 * 1024 * 1024).unwrap();
+
+    let _p: BlkPool = BlkPool::create(path, 4 * 1024, 20 * 1024 * 1024).unwrap();
 }
 
 #[test]
@@ -23,7 +24,7 @@ fn open() {
     }
 
     {
-        let _p = BlkPool::create(path, 64 * 1024, 10 * 1024 * 1024).unwrap();
+        let _p = BlkPool::create(path, 4 * 1024, 20 * 1024 * 1024).unwrap();
     }
 
     let _p = BlkPool::open(path).unwrap();
@@ -31,5 +32,5 @@ fn open() {
 
 #[test]
 fn version() {
-    BlkPool::check_version(1,1).unwrap();
+    BlkPool::check_version(1,0).unwrap();
 }

@@ -37,6 +37,10 @@ extern "C" {
 
     pub fn pmemblk_check(path: *const c_char, bsize: size_t) -> c_int;
 
+    // Error handling:
+
+    pub fn pmemblk_errormsg() -> *const c_char;
+
     // Globals
 
     pub static PMEMBLK_MIN_POOL: size_t;

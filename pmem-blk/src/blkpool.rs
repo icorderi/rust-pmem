@@ -6,6 +6,16 @@ use ::libc::c_uint;
 use ::libc::{size_t, mode_t};
 use ::pmemblk_sys::{self as ffi, PMEMblkpool};
 
+fn errormsg() -> Option<String> {
+    unsafe {
+        let reason_p = ffi::pmemblk_errormsg();
+        if ! reason_p.is_null() {
+            CStr::from_ptr(reason_p).to_owned().into_string().ok()
+        } else {
+            None
+        }
+    }
+}
 
 pub struct BlkPool {
     inner: *mut PMEMblkpool,
@@ -40,7 +50,13 @@ impl BlkPool {
         };
 
         if objpool.is_null() {
-            Err(io::Error::last_os_error())
+            let err = io::Error::last_os_error();
+            if err.kind() == io::ErrorKind::InvalidInput {
+                if let Some(msg) = errormsg() {
+                    return Err(io::Error::new(io::ErrorKind::Other, msg));
+                }
+            }
+            Err(err)
         } else {
             Ok(BlkPool { inner: objpool })
         }
