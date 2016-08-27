@@ -121,6 +121,16 @@ pub fn persist<T>(x: &T) {
 /// }
 /// ```
 pub fn msync<T>(x: &T) -> Result<(), io::Error> {
+    let len = mem::size_of::<T>();
+    let r = unsafe { ffi::pmem_msync(x as *const _ as *const c_void, len as size_t) };
+    if r == -1 {
+        Err(io::Error::last_os_error())
+    } else {
+        Ok(())
+    }
+}
+
+pub fn msync_unsized<T: ?Sized>(x: &T) -> Result<(), io::Error> {
     let len = mem::size_of_val(x);
     let r = unsafe { ffi::pmem_msync(x as *const _ as *const c_void, len as size_t) };
     if r == -1 {

@@ -7,6 +7,7 @@
 //! >              Use the normal libc functions in that case.
 
 use ::std::mem;
+use ::std::io;
 
 use ::libc::{c_void, c_int};
 use ::libc::size_t;
@@ -68,4 +69,14 @@ pub unsafe fn write_bytes<T>(pmemdest: *mut T, val: u8, count: usize) {
 /// This is appropriate for initializing uninitialized memory, or overwriting memory that has previously been read from.
 pub unsafe fn write<T>(pmemdest: *mut T, val: T) {
     copy_nooverlapping(&val as *const _, pmemdest, 1)
+}
+
+pub unsafe fn msync<T>(pmemdest: *const T, count: usize) -> Result<(), io::Error> {
+    let len = count * mem::size_of::<T>();
+    let r = ffi::pmem_msync(pmemdest as *const c_void, len as size_t);
+    if r == -1 {
+        Err(io::Error::last_os_error())
+    } else {
+        Ok(())
+    }
 }
