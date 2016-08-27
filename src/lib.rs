@@ -3,9 +3,11 @@
 //! Rust bindings for the NVM Library [http://pmem.io](http://pmem.io)
 //!
 //! The **pmem** library provides low level persistent memory support.
-//! The libraries above are implemented using **pmem**.
 //! Developers wishing to roll their own persistent memory algorithms will find this library useful,
 //! but most developers will likely use **pmem-obj** and let that library call **pmem** for them.
+//!
+//! The interfaces in `pmem` are **non-transactional**. Crates like `pmem-obj` provide transactional
+//! interfaces by building on these `pmem` functions.
 //!
 //! > This is **not** an official port of the NVM Library.
 //! >
