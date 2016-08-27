@@ -31,7 +31,7 @@ use ::std::mem;
 use ::std::io;
 use ::std::ffi::CStr;
 
-use ::libc::c_void;
+use ::libc::{c_void, c_uint};
 use ::libc::size_t;
 use ::pmem_sys as ffi;
 
@@ -167,4 +167,17 @@ pub fn drain() { unsafe { ffi::pmem_drain() }; }
 pub fn has_hw_drain() -> bool {
     let r = unsafe { ffi::pmem_has_hw_drain() };
     r > 0
+}
+
+/// Checks the version of the **libpmem** library
+pub fn check_version(major_required: usize, minor_required: usize) -> Result<(), String> {
+    unsafe {
+        let reason_p = ffi::pmem_check_version(major_required as c_uint, minor_required as c_uint);
+        if !reason_p.is_null() {
+            let reason = CStr::from_ptr(reason_p).to_owned().into_string().unwrap();
+            Err(reason)
+        } else {
+            Ok(())
+        }
+    }
 }
