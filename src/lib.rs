@@ -78,8 +78,8 @@ pub fn is_pmem<T>(x: &T) -> bool {
 ///
 /// To create your own variations of `persist(1)`, see `flush(1)` and `drain()`. One can think of `persist(1)` as:
 ///
-/// ```
-/// def persist<T>(x: &T) {
+/// ```no_run
+/// fn persist<T>(x: &T) {
 ///     // flush the processor caches
 ///     pmem::flush(x);
 ///
@@ -102,17 +102,19 @@ pub fn persist<T>(x: &T) {
 ///
 /// # Example
 ///
-/// ```
-/// // do this call once, after the pmem is memory mapped
-/// let is_pmem = pmem::is_pmem(&x);
+/// ```no_run
+/// fn some_method<T>(x: &T) {
+///     // do this call once, after the pmem is memory mapped
+///     let is_pmem = pmem::is_pmem(x);
 ///
-/// // ...make some changes to x
+///     // ...make some changes to x
 ///
-/// // make the changes durable
-/// if is_pmem {
-///     pmem::persist(&x);
-/// } else{
-///     pmem::msync(&x).unwrap();
+///     // make the changes durable
+///     if is_pmem {
+///         pmem::persist(&x);
+///     } else{
+///         pmem::msync(&x).unwrap();
+///     }
 /// }
 /// ```
 pub fn msync<T>(x: &T) -> Result<(), io::Error> {
