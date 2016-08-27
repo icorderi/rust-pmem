@@ -29,6 +29,7 @@ use ::std::io;
 use ::std::ffi::CStr;
 
 use ::libc::c_void;
+use ::libc::size_t;
 use ::pmem_sys as ffi;
 
 /// Description of the last error
@@ -58,7 +59,7 @@ pub fn errormsg() -> Option<String> {
 /// > **Warning:** Using `persist(1)` on a range where `is_pmem(1)` returns `false` may not do anything useful -- use `msync(1)` instead.
 pub fn is_pmem<T>(x: &T) -> bool {
     let len = mem::size_of_val(x);
-    let r = unsafe { ffi::pmem_is_pmem(x as *const _ as *const c_void, len) };
+    let r = unsafe { ffi::pmem_is_pmem(x as *const _ as *const c_void, len as size_t) };
     r > 0
 }
 
@@ -88,7 +89,7 @@ pub fn is_pmem<T>(x: &T) -> bool {
 /// ```
 pub fn persist<T>(x: &T) {
     let len = mem::size_of_val(x);
-    unsafe { ffi::pmem_persist(x as *const _ as *const c_void, len) };
+    unsafe { ffi::pmem_persist(x as *const _ as *const c_void, len as size_t) };
 }
 
 /// Forces any changes in an object to be stored durably.
@@ -116,7 +117,7 @@ pub fn persist<T>(x: &T) {
 /// ```
 pub fn msync<T>(x: &T) -> Result<(), io::Error> {
     let len = mem::size_of_val(x);
-    let r = unsafe { ffi::pmem_msync(x as *const _ as *const c_void, len) };
+    let r = unsafe { ffi::pmem_msync(x as *const _ as *const c_void, len as size_t) };
     if r == -1 {
         Err(io::Error::last_os_error())
     } else {
@@ -136,7 +137,7 @@ pub fn msync<T>(x: &T) -> Result<(), io::Error> {
 /// > For example, on Intel platforms, pmem_drain() is an empty function.
 pub fn flush<T>(x: &T) {
     let len = mem::size_of_val(x);
-    unsafe { ffi::pmem_flush(x as *const _ as *const c_void, len) };
+    unsafe { ffi::pmem_flush(x as *const _ as *const c_void, len as size_t) };
 }
 
 /// Waits for any pmem stores to drain from HW buffers

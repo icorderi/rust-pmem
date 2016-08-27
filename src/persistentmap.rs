@@ -5,8 +5,8 @@ use ::std::io;
 use ::std::ffi::CString;
 use ::std::path::Path;
 
-use ::libc::c_void;
-use ::libc::size_t;
+use ::libc::{c_void, c_int};
+use ::libc::{size_t, mode_t};
 
 use pmem_sys as ffi;
 
@@ -38,9 +38,9 @@ impl PersistentMap {
         let mut is_pmem = -1;
         let r = unsafe {
             ffi::pmem_map_file(path.as_ptr(),
-                               len,
-                               flags.bits,
-                               mode,
+                               len as size_t,
+                               flags.bits as c_int,
+                               mode as mode_t,
                                &mut mapped_len as *mut _ as *mut size_t,
                                &mut is_pmem as *mut _)
         };
@@ -103,7 +103,7 @@ impl ::std::ops::DerefMut for PersistentMap {
 impl Drop for PersistentMap {
     fn drop(&mut self) {
         let len = mem::size_of_val(self);
-        let _r = unsafe { ffi::pmem_unmap(self.buf.as_mut_slice() as *mut _ as *mut c_void, len) };
+        let _r = unsafe { ffi::pmem_unmap(self.buf.as_mut_slice() as *mut _ as *mut c_void, len as size_t) };
         // XXX: What if unmap fails?
     }
 }

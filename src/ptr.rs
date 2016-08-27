@@ -8,7 +8,8 @@
 
 use ::std::mem;
 
-use ::libc::c_void;
+use ::libc::{c_void, c_int};
+use ::libc::size_t;
 use ::pmem_sys as ffi;
 
 /// Copies `count * size_of<T>` bytes from `src` to `pmemdest`. The source and destination may overlap.
@@ -24,7 +25,7 @@ use ::pmem_sys as ffi;
 /// However it does not drop the contents of `pmemdest`, or prevent the contents of `src` from being dropped or used.
 pub unsafe fn copy<T>(src: *const T, pmemdest: *mut T, count: usize) {
     let len = mem::size_of::<T>() * count;
-    ffi::pmem_memmove_persist(pmemdest as *mut c_void, src as *const c_void, len);
+    ffi::pmem_memmove_persist(pmemdest as *mut c_void, src as *const c_void, len as size_t);
 }
 
 /// Copies `count * size_of<T>` bytes from `src` to `pmemdest`. The source and destination may _not_ overlap.
@@ -42,7 +43,7 @@ pub unsafe fn copy<T>(src: *const T, pmemdest: *mut T, count: usize) {
 /// However it does not drop the contents of `pmemdest`, or prevent the contents of `src` from being dropped or used.
 pub unsafe fn copy_nooverlapping<T>(src: *const T, pmemdest: *mut T, count: usize) {
     let len = mem::size_of::<T>() * count;
-    ffi::pmem_memcpy_persist(pmemdest as *mut c_void, src as *const c_void, len);
+    ffi::pmem_memcpy_persist(pmemdest as *mut c_void, src as *const c_void, len as size_t);
 }
 
 /// Invokes memset on the specified pointer, setting `count * size_of::<T>()` bytes of memory starting at `pmemdest` to `val`.
@@ -50,5 +51,5 @@ pub unsafe fn copy_nooverlapping<T>(src: *const T, pmemdest: *mut T, count: usiz
 /// Ensures that the result has been flushed to persistence before returning.
 pub unsafe fn write_bytes<T>(pmemdest: *mut T, val: u8, count: usize) {
     let len = mem::size_of::<T>() * count;
-    ffi::pmem_memset_persist(pmemdest as *mut c_void, val as i32, len);
+    ffi::pmem_memset_persist(pmemdest as *mut c_void, val as c_int, len as size_t);
 }
