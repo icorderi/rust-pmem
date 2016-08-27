@@ -48,4 +48,8 @@ extern "C" {
     // Library API versioning:
 
     pub fn pmem_check_version(major_required: c_uint, minor_required: c_uint) -> *const c_char;
+
+    // Error handling:
+
+    pub fn pmem_errormsg() -> *const c_char;
 }

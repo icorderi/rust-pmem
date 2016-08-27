@@ -16,6 +16,7 @@ documentation = "https://icorderi.github.io/rust-pmem/index.html"
 [dependencies]
 pmem-sys = { path = "sys/pmem-sys", version = "0.0" }
 libc = "0.2"
+bitflags = "0.7"
 
 [workspace]
 members = [
