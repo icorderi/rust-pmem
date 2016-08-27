@@ -53,3 +53,19 @@ pub unsafe fn write_bytes<T>(pmemdest: *mut T, val: u8, count: usize) {
     let len = mem::size_of::<T>() * count;
     ffi::pmem_memset_persist(pmemdest as *mut c_void, val as c_int, len as size_t);
 }
+
+/// Overwrites a memory location with the given value without reading or dropping the old value.
+///
+/// Ensures that the result has been flushed to persistence before returning.
+///
+/// # Safety
+///
+/// This operation is marked unsafe because it accepts a raw pointer.
+///
+/// It does not drop the contents of dst. This is safe, but it could leak allocations or resources,
+/// so care must be taken not to overwrite an object that should be dropped.
+///
+/// This is appropriate for initializing uninitialized memory, or overwriting memory that has previously been read from.
+pub unsafe fn write<T>(pmemdest: *mut T, val: T) {
+    copy_nooverlapping(&val as *const _, pmemdest, 1)
+}

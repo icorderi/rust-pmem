@@ -9,13 +9,16 @@ use ::libc::{c_void, c_int};
 use ::libc::{size_t, mode_t};
 
 use pmem_sys as ffi;
+use ptr;
+use cell::PmemCell;
 
 /// Persistent memory region
 ///
 /// The region will be automatically unmapped when the variable is dropped
 pub struct PersistentMap {
     is_pmem: bool,
-    buf: Vec<u8>,
+    buf: *mut c_void,
+    len: usize,
 }
 
 impl PersistentMap {
@@ -34,8 +37,8 @@ impl PersistentMap {
                                 mode: u16)
                                 -> Result<Self, io::Error> {
         let path = CString::new(path.as_ref().to_str().unwrap()).unwrap();
-        let mut mapped_len = -1;
-        let mut is_pmem = -1;
+        let mut mapped_len = 0;
+        let mut is_pmem = 0;
         let r = unsafe {
             ffi::pmem_map_file(path.as_ptr(),
                                len as size_t,
@@ -47,8 +50,8 @@ impl PersistentMap {
         if r.is_null() {
             Err(io::Error::last_os_error())
         } else {
-            let is_pmem = is_pmem > 1;
-            Ok(PersistentMap { is_pmem: is_pmem, buf: Vec::new() })
+            let is_pmem = is_pmem > 0;
+            Ok(PersistentMap { is_pmem: is_pmem, buf: r, len: mapped_len })
         }
     }
 
@@ -89,21 +92,42 @@ impl PersistentMap {
     }
 
     pub fn is_pmem(&self) -> bool { self.is_pmem }
+
+    pub fn len(&self) -> usize { self.len }
+
+    pub unsafe fn uninitialized<T>(&self, offset: isize) -> PmemCell<T> {
+        let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
+        PmemCell::new(t_p)
+    }
+
+    pub unsafe fn zeroed<T>(&self, offset: isize) -> PmemCell<T> {
+        let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
+        ptr::write_bytes(t_p, 0, 1);
+        PmemCell::new(t_p)
+    }
+
+    pub unsafe fn write<T>(&self, offset: isize, val: T) -> PmemCell<T> {
+        let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
+        ptr::write(t_p, val);
+        PmemCell::new(t_p)
+    }
 }
 
 impl ::std::ops::Deref for PersistentMap {
     type Target = [u8];
-    fn deref(&self) -> &[u8] { &self.buf }
+    fn deref(&self) -> &[u8] { unsafe { ::std::slice::from_raw_parts(self.buf as *mut _, self.len) } }
 }
 
 impl ::std::ops::DerefMut for PersistentMap {
-    fn deref_mut(&mut self) -> &mut [u8] { &mut self.buf }
+    fn deref_mut(&mut self) -> &mut [u8] {
+        unsafe { ::std::slice::from_raw_parts_mut(self.buf as *mut _, self.len) }
+    }
 }
 
 impl Drop for PersistentMap {
     fn drop(&mut self) {
         let len = mem::size_of_val(self);
-        let _r = unsafe { ffi::pmem_unmap(self.buf.as_mut_slice() as *mut _ as *mut c_void, len as size_t) };
+        let _r = unsafe { ffi::pmem_unmap(self.buf, len) };
         // XXX: What if unmap fails?
     }
 }
