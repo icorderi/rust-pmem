@@ -1,6 +1,6 @@
 //! The functions in this section provide optimized copying to persistent memory _without_ draining
 //!
-//! The `copy`, `copy_nooverlapping`, and `write_bytes` are similar to the ones on the `persistent` module,
+//! The `copy`, `copy_nonoverlapping`, and `write_bytes` are similar to the ones on the `persistent` module,
 //! except they skip the final `pmem::drain()` step.
 //! This allows applications to optimize cases where several ranges are being copied to persistent memory,
 //! followed by a single call to `pmem::drain()`.
@@ -29,7 +29,7 @@ pub unsafe fn copy<T>(src: *const T, pmemdest: *mut T, count: usize) {
 
 /// Copies `count * size_of<T>` bytes from `src` to `pmemdest`. The source and destination may _not_ overlap.
 ///
-/// `copy_nooverlapping` is semantically equivalent to C's `memcpy` and is optimized for persitent memory.
+/// `copy_nonoverlapping` is semantically equivalent to C's `memcpy` and is optimized for persitent memory.
 ///
 /// # Safety
 ///
@@ -38,7 +38,7 @@ pub unsafe fn copy<T>(src: *const T, pmemdest: *mut T, count: usize) {
 /// Care must also be taken with the ownership of `src` and `pmemdest`.
 /// This method semantically moves the values of `src` into `pmemdest`.
 /// However it does not drop the contents of `pmemdest`, or prevent the contents of `src` from being dropped or used.
-pub unsafe fn copy_nooverlapping<T>(src: *const T, pmemdest: *mut T, count: usize) {
+pub unsafe fn copy_nonoverlapping<T>(src: *const T, pmemdest: *mut T, count: usize) {
     let len = mem::size_of::<T>() * count;
     ffi::pmem_memcpy_nodrain(pmemdest as *mut c_void, src as *const c_void, len as size_t);
 }

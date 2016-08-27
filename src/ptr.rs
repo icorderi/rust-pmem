@@ -1,6 +1,6 @@
 //! The functions in this section provide optimized copying to persistent memory
 //!
-//! The `copy`, `copy_nooverlapping`, and `write_bytes`, provide the same memory copying as
+//! The `copy`, `copy_nonoverlapping`, and `write_bytes`, provide the same memory copying as
 //! `memmove(3)`, `memcpy(3)`, and `memset(3)`, and ensure that the result has been flushed to persistence before returning.
 //!
 //! > **Warning:** Using these functions where `is_pmem(1)` returns false may not do anything useful.
@@ -31,7 +31,7 @@ pub unsafe fn copy<T>(src: *const T, pmemdest: *mut T, count: usize) {
 
 /// Copies `count * size_of<T>` bytes from `src` to `pmemdest`. The source and destination may _not_ overlap.
 ///
-/// `copy_nooverlapping` is semantically equivalent to C's `memcpy` and is optimized for persitent memory.
+/// `copy_nonoverlapping` is semantically equivalent to C's `memcpy` and is optimized for persitent memory.
 ///
 /// Ensures that the result has been flushed to persistence before returning.
 ///
@@ -42,7 +42,7 @@ pub unsafe fn copy<T>(src: *const T, pmemdest: *mut T, count: usize) {
 /// Care must also be taken with the ownership of `src` and `pmemdest`.
 /// This method semantically moves the values of `src` into `pmemdest`.
 /// However it does not drop the contents of `pmemdest`, or prevent the contents of `src` from being dropped or used.
-pub unsafe fn copy_nooverlapping<T>(src: *const T, pmemdest: *mut T, count: usize) {
+pub unsafe fn copy_nonoverlapping<T>(src: *const T, pmemdest: *mut T, count: usize) {
     let len = mem::size_of::<T>() * count;
     ffi::pmem_memcpy_persist(pmemdest as *mut c_void, src as *const c_void, len as size_t);
 }
@@ -68,7 +68,7 @@ pub unsafe fn write_bytes<T>(pmemdest: *mut T, val: u8, count: usize) {
 ///
 /// This is appropriate for initializing uninitialized memory, or overwriting memory that has previously been read from.
 pub unsafe fn write<T>(pmemdest: *mut T, val: T) {
-    copy_nooverlapping(&val as *const _, pmemdest, 1)
+    copy_nonoverlapping(&val as *const _, pmemdest, 1)
 }
 
 pub unsafe fn msync<T>(pmemdest: *const T, count: usize) -> Result<(), io::Error> {
