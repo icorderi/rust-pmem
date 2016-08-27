@@ -111,6 +111,11 @@ impl PersistentMap {
         ptr::write(t_p, val);
         PmemCell::new(t_p)
     }
+
+    pub unsafe fn read<T>(&self, offset: isize) -> PmemCell<T> {
+        let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
+        PmemCell::new(t_p)
+    }
 }
 
 impl ::std::ops::Deref for PersistentMap {

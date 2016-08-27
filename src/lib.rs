@@ -20,7 +20,7 @@ extern crate libc;
 
 // Modules
 
-pub mod persistentmap;
+pub mod pmap;
 pub mod ptr;
 pub mod cell;
 pub mod nodrain;
