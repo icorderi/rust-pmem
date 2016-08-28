@@ -38,6 +38,10 @@ impl<T: ?Sized> PmemConstVirtualPtr<T> {
     pub unsafe fn as_type<U>(self) -> PmemConstVirtualPtr<U> {
         PmemConstVirtualPtr { poolid: self.poolid, offset: self.offset, _t: PhantomData }
     }
+
+    pub unsafe fn as_mut(self) -> PmemMutVirtualPtr<T> {
+        PmemMutVirtualPtr { poolid: self.poolid, offset: self.offset, _t: PhantomData }
+    }
 }
 
 impl<T> PmemConstVirtualPtr<T> {
@@ -77,6 +81,10 @@ impl<T: ?Sized> PmemMutVirtualPtr<T> {
     pub unsafe fn as_type<U>(self) -> PmemMutVirtualPtr<U> {
         PmemMutVirtualPtr { poolid: self.poolid, offset: self.offset, _t: PhantomData }
     }
+
+    pub unsafe fn as_const(self) -> PmemConstVirtualPtr<T> {
+        PmemConstVirtualPtr { poolid: self.poolid, offset: self.offset, _t: PhantomData }
+    }
 }
 
 impl<T> PmemMutVirtualPtr<T> {
@@ -107,6 +115,10 @@ pub struct PmemConstPtr<T: ?Sized> {
 
 impl<T: ?Sized> PmemConstPtr<T> {
     pub fn is_null(&self) -> bool { self.virt.is_null() }
+
+    pub unsafe fn as_mut(self) -> PmemMutPtr<T> {
+        PmemMutPtr { virt: self.virt.as_mut(), pool: self.pool as *mut T }
+    }
 }
 
 impl<T> PmemConstPtr<T> {
@@ -146,6 +158,10 @@ pub struct PmemMutPtr<T: ?Sized> {
 
 impl<T: ?Sized> PmemMutPtr<T> {
     pub fn is_null(&self) -> bool { self.virt.is_null() }
+
+    pub unsafe fn as_const(self) -> PmemConstPtr<T> {
+        PmemConstPtr { virt: self.virt.as_const(), pool: self.pool as *const T }
+    }
 }
 
 impl<T> PmemMutPtr<T> {
