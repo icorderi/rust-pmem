@@ -19,6 +19,7 @@ use pmap::PersistentMap;
 /// Persistent memory virtual pointer
 ///
 /// This pointer is safe to store.
+#[derive(Copy, Clone)]
 pub struct PmemConstVirtualPtr<T: ?Sized> {
     poolid: usize,
     offset: usize,
@@ -62,6 +63,7 @@ impl<T> PmemConstVirtualPtr<T> {
 /// Persistent memory virtual mutable pointer
 ///
 /// This pointer is safe to store.
+#[derive(Copy, Clone)]
 pub struct PmemMutVirtualPtr<T: ?Sized> {
     poolid: usize,
     offset: usize,
@@ -108,6 +110,7 @@ impl<T> PmemMutVirtualPtr<T> {
 ///
 /// This pointer is **not** safe to store directly on pmem.
 /// You can get a _safe_ virtual pointer using `as_virtual()`.
+#[derive(Copy, Clone)]
 pub struct PmemConstPtr<T: ?Sized> {
     virt: PmemConstVirtualPtr<T>,
     pool: *const T,
@@ -151,6 +154,7 @@ impl<T> PmemConstPtr<T> {
 ///
 /// This pointer is **not** safe to store directly on pmem.
 /// You can get a _safe_ virtual pointer using `as_virtual()`.
+#[derive(Copy, Clone)]
 pub struct PmemMutPtr<T: ?Sized> {
     virt: PmemMutVirtualPtr<T>,
     pool: *mut T,
