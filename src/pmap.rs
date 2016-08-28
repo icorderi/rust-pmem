@@ -9,7 +9,7 @@ use ::libc::{c_void, c_int};
 use ::libc::{size_t, mode_t};
 
 use pmem_sys as ffi;
-use ptr;
+use ptr::{self, PmemConstPtr, PmemMutPtr};
 use cell::PmemCell;
 
 /// Persistent memory region
@@ -115,6 +115,22 @@ impl PersistentMap {
     pub unsafe fn read<T>(&self, offset: isize) -> PmemCell<T> {
         let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
         PmemCell::new(t_p)
+    }
+
+    pub fn as_ptr<T>(&self) -> *const T {
+        self.buf as *const T
+    }
+
+    pub fn as_mut_ptr<T>(&mut self) -> *mut T {
+        self.buf as *mut T
+    }
+
+    pub fn as_pmem_ptr<T>(&self) -> PmemConstPtr<T> {
+        unsafe { ptr::PmemConstVirtualPtr::new(1, 0).link(self) }
+    }
+
+    pub fn as_pmem_mut_ptr<T>(&mut self) -> PmemMutPtr<T> {
+        unsafe { ptr::PmemMutVirtualPtr::new(1, 0).link(self) }
     }
 }
 

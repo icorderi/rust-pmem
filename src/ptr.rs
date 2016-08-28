@@ -17,58 +17,114 @@ use ::pmem_sys as ffi;
 use pmap::PersistentMap;
 
 /// Persistent memory virtual pointer
-pub struct PmemConstPtr<T: ?Sized> {
+///
+/// This pointer is safe to store.
+pub struct PmemConstVirtualPtr<T: ?Sized> {
     poolid: usize,
     offset: usize,
     _t: PhantomData<T>,
 }
 
-impl<T: ?Sized> PmemConstPtr<T> {
-    pub fn null() -> Self { PmemConstPtr { poolid: 0, offset: 0, _t: PhantomData } }
+impl<T: ?Sized> PmemConstVirtualPtr<T> {
+    pub unsafe fn new(poolid: usize, offset: usize) -> Self {
+        assert!(poolid != 0, "Poolid 0 is reserved for null pointers");
+        PmemConstVirtualPtr { poolid: poolid, offset: offset, _t: PhantomData }
+    }
+
+    pub fn null() -> Self { PmemConstVirtualPtr { poolid: 0, offset: 0, _t: PhantomData } }
 
     pub fn is_null(&self) -> bool { self.poolid == 0 }
 }
 
-impl<T> PmemConstPtr<T> {
+impl<T> PmemConstVirtualPtr<T> {
     pub unsafe fn offset(&self, count: isize) -> Self {
         if self.is_null() {
-            PmemConstPtr::null()
+            PmemConstVirtualPtr::null()
         } else {
             let new_offset = self.offset as isize + mem::size_of::<T>() as isize * count;
-            PmemConstPtr { poolid: self.poolid, offset: new_offset as usize, _t: self._t }
+            PmemConstVirtualPtr { poolid: self.poolid, offset: new_offset as usize, _t: self._t }
         }
     }
 
-    pub unsafe fn direct(&self, pool: &PersistentMap) -> *const T {
-        pool.as_ptr().offset(self.offset as isize) as *const T
+    pub unsafe fn link(self, pool: &PersistentMap) -> PmemConstPtr<T> {
+        PmemConstPtr { virt: self, pool: pool.as_ptr() }
     }
 }
 
 /// Persistent memory virtual mutable pointer
-pub struct PmemMutPtr<T: ?Sized> {
+///
+/// This pointer is safe to store.
+pub struct PmemMutVirtualPtr<T: ?Sized> {
     poolid: usize,
     offset: usize,
     _t: PhantomData<T>,
 }
 
-impl<T: ?Sized> PmemMutPtr<T> {
-    pub fn null() -> Self { PmemMutPtr { poolid: 0, offset: 0, _t: PhantomData } }
+impl<T: ?Sized> PmemMutVirtualPtr<T> {
+    pub unsafe fn new(poolid: usize, offset: usize) -> Self {
+        assert!(poolid != 0, "Poolid 0 is reserved for null pointers");
+        PmemMutVirtualPtr { poolid: poolid, offset: offset, _t: PhantomData }
+    }
+
+    pub fn null() -> Self { PmemMutVirtualPtr { poolid: 0, offset: 0, _t: PhantomData } }
 
     pub fn is_null(&self) -> bool { self.poolid == 0 }
 }
 
-impl<T> PmemMutPtr<T> {
+impl<T> PmemMutVirtualPtr<T> {
     pub unsafe fn offset(&self, count: isize) -> Self {
         if self.is_null() {
-            PmemMutPtr::null()
+            PmemMutVirtualPtr::null()
         } else {
             let new_offset = self.offset as isize + mem::size_of::<T>() as isize * count;
-            PmemMutPtr { poolid: self.poolid, offset: new_offset as usize, _t: self._t }
+            PmemMutVirtualPtr { poolid: self.poolid, offset: new_offset as usize, _t: self._t }
         }
     }
 
-    pub unsafe fn direct(&self, pool: &mut PersistentMap) -> *mut T {
-        pool.as_mut_ptr().offset(self.offset as isize) as *mut T
+    pub unsafe fn link(self, pool: &mut PersistentMap) -> PmemMutPtr<T> {
+        PmemMutPtr { virt: self, pool: pool.as_mut_ptr() }
+    }
+}
+
+/// Direct `*const T` pointer to a pmem location
+///
+/// # Safety
+///
+/// This pointer is **not** safe to store directly on pmem.
+/// You can get a _safe_ virtual pointer using `as_virtual()`.
+pub struct PmemConstPtr<T: ?Sized> {
+    virt: PmemConstVirtualPtr<T>,
+    pool: *const T,
+}
+
+impl<T> PmemConstPtr<T> {
+    pub unsafe fn direct(&self) -> *const T {
+        self.pool.offset(self.virt.offset as isize) as *const T
+    }
+
+    pub fn as_virtual(self) -> PmemConstVirtualPtr<T> {
+        self.virt
+    }
+}
+
+/// Direct `*mut T` pointer to a pmem location
+///
+/// # Safety
+///
+/// This pointer is **not** safe to store directly on pmem.
+/// You can get a _safe_ virtual pointer using `as_virtual()`.
+pub struct PmemMutPtr<T: ?Sized> {
+    virt: PmemMutVirtualPtr<T>,
+    pool: *mut T,
+}
+
+impl<T> PmemMutPtr<T> {
+    pub unsafe fn direct(&self) -> *mut T {
+        self.pool.offset(self.virt.offset as isize) as *mut T
+    }
+
+    pub fn as_virtual(self) -> PmemMutVirtualPtr<T> {
+        self.virt
     }
 }
 
