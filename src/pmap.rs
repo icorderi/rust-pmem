@@ -10,7 +10,7 @@ use ::libc::{size_t, mode_t};
 
 use pmem_sys as ffi;
 use ptr::{self, PmemConstPtr, PmemMutPtr};
-use cell::PmemCell;
+use cell::PmemMutRef;
 
 /// Persistent memory region
 ///
@@ -95,26 +95,26 @@ impl PersistentMap {
 
     pub fn len(&self) -> usize { self.len }
 
-    pub unsafe fn uninitialized<T>(&self, offset: isize) -> PmemCell<T> {
+    pub unsafe fn uninitialized<T>(&self, offset: isize) -> PmemMutRef<T> {
         let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
-        PmemCell::new(t_p)
+        PmemMutRef::new(t_p)
     }
 
-    pub unsafe fn zeroed<T>(&self, offset: isize) -> PmemCell<T> {
+    pub unsafe fn zeroed<T>(&self, offset: isize) -> PmemMutRef<T> {
         let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
         ptr::write_bytes(t_p, 0, 1);
-        PmemCell::new(t_p)
+        PmemMutRef::new(t_p)
     }
 
-    pub unsafe fn write<T>(&self, offset: isize, val: T) -> PmemCell<T> {
+    pub unsafe fn write<T>(&self, offset: isize, val: T) -> PmemMutRef<T> {
         let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
         ptr::write(t_p, val);
-        PmemCell::new(t_p)
+        PmemMutRef::new(t_p)
     }
 
-    pub unsafe fn read<T>(&self, offset: isize) -> PmemCell<T> {
+    pub unsafe fn read<T>(&self, offset: isize) -> PmemMutRef<T> {
         let t_p = self.buf.offset(offset) as *mut u8 as *mut T;
-        PmemCell::new(t_p)
+        PmemMutRef::new(t_p)
     }
 
     pub fn as_ptr<T>(&self) -> *const T {
