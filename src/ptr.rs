@@ -105,6 +105,11 @@ impl<T> PmemConstPtr<T> {
     pub fn as_virtual(self) -> PmemConstVirtualPtr<T> {
         self.virt
     }
+
+    pub unsafe fn offset(&self, count: isize) -> Self {
+        let new_virt = self.virt.offset(count);
+        PmemConstPtr { virt: new_virt, pool: self.pool }
+    }
 }
 
 /// Direct `*mut T` pointer to a pmem location
@@ -125,6 +130,11 @@ impl<T> PmemMutPtr<T> {
 
     pub fn as_virtual(self) -> PmemMutVirtualPtr<T> {
         self.virt
+    }
+
+    pub unsafe fn offset(&self, count: isize) -> Self {
+        let new_virt = self.virt.offset(count);
+        PmemMutPtr { virt: new_virt, pool: self.pool }
     }
 }
 
