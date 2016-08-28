@@ -61,6 +61,12 @@ impl<T> PmemConstVirtualPtr<T> {
     }
 }
 
+impl<T> ::std::fmt::Pointer for PmemConstVirtualPtr<T> {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{:#x}:{:#x}",self.poolid, self.offset)
+    }
+}
+
 /// Persistent memory virtual mutable pointer
 ///
 /// This pointer is safe to store.
@@ -87,6 +93,12 @@ impl<T: ?Sized> PmemMutVirtualPtr<T> {
 
     pub unsafe fn as_const(&self) -> PmemConstVirtualPtr<T> {
         PmemConstVirtualPtr { poolid: self.poolid, offset: self.offset, _t: PhantomData }
+    }
+}
+
+impl<T> ::std::fmt::Pointer for PmemMutVirtualPtr<T> {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{:#x}:{:#x}",self.poolid, self.offset)
     }
 }
 
@@ -150,6 +162,12 @@ impl<T> PmemConstPtr<T> {
     }
 }
 
+impl<T> ::std::fmt::Pointer for PmemConstPtr<T> {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{:p} -> {:p}",self.virt, unsafe { self.direct() })
+    }
+}
+
 /// Direct `*mut T` pointer to a pmem location
 ///
 /// # Safety
@@ -191,6 +209,12 @@ impl<T> PmemMutPtr<T> {
     pub unsafe fn as_type<U>(&self) -> PmemMutPtr<U> {
         let new_virt = self.virt.as_type();
         PmemMutPtr { virt: new_virt, pool: self.pool as *mut U }
+    }
+}
+
+impl<T> ::std::fmt::Pointer for PmemMutPtr<T> {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{:p} -> {:p}",self.virt, unsafe { self.direct() })
     }
 }
 
