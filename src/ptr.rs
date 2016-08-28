@@ -67,6 +67,12 @@ impl<T> ::std::fmt::Pointer for PmemConstVirtualPtr<T> {
     }
 }
 
+impl<T> ::std::fmt::Debug for PmemConstVirtualPtr<T> {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "PmemVirt *const {{ pool: {:#x}, offset: {:#x} }}", self.poolid, self.offset)
+    }
+}
+
 /// Persistent memory virtual mutable pointer
 ///
 /// This pointer is safe to store.
@@ -99,6 +105,12 @@ impl<T: ?Sized> PmemMutVirtualPtr<T> {
 impl<T> ::std::fmt::Pointer for PmemMutVirtualPtr<T> {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         write!(f, "{:#x}:{:#x}",self.poolid, self.offset)
+    }
+}
+
+impl<T> ::std::fmt::Debug for PmemMutVirtualPtr<T> {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "PmemVirt *mut {{ pool: {:#x}, offset: {:#x} }}", self.poolid, self.offset)
     }
 }
 
@@ -168,6 +180,12 @@ impl<T> ::std::fmt::Pointer for PmemConstPtr<T> {
     }
 }
 
+impl<T> ::std::fmt::Debug for PmemConstPtr<T> {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "Pmem *const {{ pool: {:#x}, offset: {:#x} }}", self.virt.poolid, self.virt.offset)
+    }
+}
+
 /// Direct `*mut T` pointer to a pmem location
 ///
 /// # Safety
@@ -215,6 +233,12 @@ impl<T> PmemMutPtr<T> {
 impl<T> ::std::fmt::Pointer for PmemMutPtr<T> {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         write!(f, "{:p} -> {:p}",self.virt, unsafe { self.direct() })
+    }
+}
+
+impl<T> ::std::fmt::Debug for PmemMutPtr<T> {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "Pmem *mut {{ pool: {:#x}, offset: {:#x} }}", self.virt.poolid, self.virt.offset)
     }
 }
 
