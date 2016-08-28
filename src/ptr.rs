@@ -8,10 +8,69 @@
 
 use ::std::mem;
 use ::std::io;
+use ::std::marker::PhantomData;
 
 use ::libc::{c_void, c_int};
 use ::libc::size_t;
 use ::pmem_sys as ffi;
+
+use pmap::PersistentMap;
+
+/// Persistent memory virtual pointer
+pub struct PmemConstPtr<T: ?Sized> {
+    poolid: usize,
+    offset: usize,
+    _t: PhantomData<T>,
+}
+
+impl<T: ?Sized> PmemConstPtr<T> {
+    pub fn null() -> Self { PmemConstPtr { poolid: 0, offset: 0, _t: PhantomData } }
+
+    pub fn is_null(&self) -> bool { self.poolid == 0 }
+}
+
+impl<T> PmemConstPtr<T> {
+    pub unsafe fn offset(&self, count: isize) -> Self {
+        if self.is_null() {
+            PmemConstPtr::null()
+        } else {
+            let new_offset = self.offset as isize + mem::size_of::<T>() as isize * count;
+            PmemConstPtr { poolid: self.poolid, offset: new_offset as usize, _t: self._t }
+        }
+    }
+
+    pub unsafe fn direct(&self, pool: &PersistentMap) -> *const T {
+        pool.as_ptr().offset(self.offset as isize) as *const T
+    }
+}
+
+/// Persistent memory virtual mutable pointer
+pub struct PmemMutPtr<T: ?Sized> {
+    poolid: usize,
+    offset: usize,
+    _t: PhantomData<T>,
+}
+
+impl<T: ?Sized> PmemMutPtr<T> {
+    pub fn null() -> Self { PmemMutPtr { poolid: 0, offset: 0, _t: PhantomData } }
+
+    pub fn is_null(&self) -> bool { self.poolid == 0 }
+}
+
+impl<T> PmemMutPtr<T> {
+    pub unsafe fn offset(&self, count: isize) -> Self {
+        if self.is_null() {
+            PmemMutPtr::null()
+        } else {
+            let new_offset = self.offset as isize + mem::size_of::<T>() as isize * count;
+            PmemMutPtr { poolid: self.poolid, offset: new_offset as usize, _t: self._t }
+        }
+    }
+
+    pub unsafe fn direct(&self, pool: &mut PersistentMap) -> *mut T {
+        pool.as_mut_ptr().offset(self.offset as isize) as *mut T
+    }
+}
 
 /// Copies `count * size_of<T>` bytes from `src` to `pmemdest`. The source and destination may overlap.
 ///
@@ -67,9 +126,7 @@ pub unsafe fn write_bytes<T>(pmemdest: *mut T, val: u8, count: usize) {
 /// so care must be taken not to overwrite an object that should be dropped.
 ///
 /// This is appropriate for initializing uninitialized memory, or overwriting memory that has previously been read from.
-pub unsafe fn write<T>(pmemdest: *mut T, val: T) {
-    copy_nonoverlapping(&val as *const _, pmemdest, 1)
-}
+pub unsafe fn write<T>(pmemdest: *mut T, val: T) { copy_nonoverlapping(&val as *const _, pmemdest, 1) }
 
 pub unsafe fn msync<T>(pmemdest: *const T, count: usize) -> Result<(), io::Error> {
     let len = count * mem::size_of::<T>();
