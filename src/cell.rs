@@ -16,3 +16,15 @@ impl<T> ::std::ops::Deref for PmemCell<T> {
 impl<T> ::std::ops::DerefMut for PmemCell<T> {
     fn deref_mut(&mut self) -> &mut T { unsafe { &mut *self.ptr } }
 }
+
+impl<T> ::std::fmt::Debug for PmemCell<T> where T: ::std::fmt::Debug {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{:?}", (self as &T))
+    }
+}
+
+impl<T> ::std::fmt::Display for PmemCell<T> where T: ::std::fmt::Display {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        write!(f, "{}", (self as &T))
+    }
+}
