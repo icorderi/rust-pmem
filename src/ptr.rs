@@ -55,8 +55,9 @@ impl<T> PmemConstVirtualPtr<T> {
         }
     }
 
-    pub unsafe fn link(self, pool: &PersistentMap) -> PmemConstPtr<T> {
-        PmemConstPtr { virt: self, pool: pool.as_ptr() }
+    pub unsafe fn link(&self, pool: &PersistentMap) -> PmemConstPtr<T> {
+        let new_virt = PmemConstVirtualPtr { poolid: self.poolid, offset: self.offset, _t: self._t };
+        PmemConstPtr { virt: new_virt, pool: pool.as_ptr() }
     }
 }
 
@@ -99,8 +100,9 @@ impl<T> PmemMutVirtualPtr<T> {
         }
     }
 
-    pub unsafe fn link(self, pool: &mut PersistentMap) -> PmemMutPtr<T> {
-        PmemMutPtr { virt: self, pool: pool.as_mut_ptr() }
+    pub unsafe fn link(&self, pool: &mut PersistentMap) -> PmemMutPtr<T> {
+        let new_virt = PmemMutVirtualPtr { poolid: self.poolid, offset: self.offset, _t: self._t };
+        PmemMutPtr { virt: new_virt, pool: pool.as_mut_ptr() }
     }
 }
 
