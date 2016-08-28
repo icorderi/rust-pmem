@@ -34,6 +34,10 @@ impl<T: ?Sized> PmemConstVirtualPtr<T> {
     pub fn null() -> Self { PmemConstVirtualPtr { poolid: 0, offset: 0, _t: PhantomData } }
 
     pub fn is_null(&self) -> bool { self.poolid == 0 }
+
+    pub unsafe fn as_type<U>(self) -> PmemConstVirtualPtr<U> {
+        PmemConstVirtualPtr { poolid: self.poolid, offset: self.offset, _t: PhantomData }
+    }
 }
 
 impl<T> PmemConstVirtualPtr<T> {
@@ -69,6 +73,10 @@ impl<T: ?Sized> PmemMutVirtualPtr<T> {
     pub fn null() -> Self { PmemMutVirtualPtr { poolid: 0, offset: 0, _t: PhantomData } }
 
     pub fn is_null(&self) -> bool { self.poolid == 0 }
+
+    pub unsafe fn as_type<U>(self) -> PmemMutVirtualPtr<U> {
+        PmemMutVirtualPtr { poolid: self.poolid, offset: self.offset, _t: PhantomData }
+    }
 }
 
 impl<T> PmemMutVirtualPtr<T> {
@@ -110,6 +118,11 @@ impl<T> PmemConstPtr<T> {
         let new_virt = self.virt.offset(count);
         PmemConstPtr { virt: new_virt, pool: self.pool }
     }
+
+    pub unsafe fn as_type<U>(self) -> PmemConstPtr<U> {
+        let new_virt = self.virt.as_type();
+        PmemConstPtr { virt: new_virt, pool: self.pool as *mut U }
+    }
 }
 
 /// Direct `*mut T` pointer to a pmem location
@@ -135,6 +148,11 @@ impl<T> PmemMutPtr<T> {
     pub unsafe fn offset(&self, count: isize) -> Self {
         let new_virt = self.virt.offset(count);
         PmemMutPtr { virt: new_virt, pool: self.pool }
+    }
+
+    pub unsafe fn as_type<U>(self) -> PmemMutPtr<U> {
+        let new_virt = self.virt.as_type();
+        PmemMutPtr { virt: new_virt, pool: self.pool as *mut U }
     }
 }
 
