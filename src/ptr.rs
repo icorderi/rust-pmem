@@ -105,9 +105,17 @@ pub struct PmemConstPtr<T: ?Sized> {
     pool: *const T,
 }
 
+impl<T: ?Sized> PmemConstPtr<T> {
+    pub fn is_null(&self) -> bool { self.virt.is_null() }
+}
+
 impl<T> PmemConstPtr<T> {
     pub unsafe fn direct(&self) -> *const T {
-        self.pool.offset(self.virt.offset as isize) as *const T
+        if self.is_null() {
+            ::std::ptr::null()
+        } else {
+            self.pool.offset(self.virt.offset as isize) as *const T
+        }
     }
 
     pub fn as_virtual(self) -> PmemConstVirtualPtr<T> {
@@ -136,9 +144,17 @@ pub struct PmemMutPtr<T: ?Sized> {
     pool: *mut T,
 }
 
+impl<T: ?Sized> PmemMutPtr<T> {
+    pub fn is_null(&self) -> bool { self.virt.is_null() }
+}
+
 impl<T> PmemMutPtr<T> {
     pub unsafe fn direct(&self) -> *mut T {
-        self.pool.offset(self.virt.offset as isize) as *mut T
+        if self.is_null() {
+            ::std::ptr::null_mut()
+        } else {
+            self.pool.offset(self.virt.offset as isize) as *mut T
+        }
     }
 
     pub fn as_virtual(self) -> PmemMutVirtualPtr<T> {
@@ -155,6 +171,15 @@ impl<T> PmemMutPtr<T> {
         PmemMutPtr { virt: new_virt, pool: self.pool as *mut U }
     }
 }
+
+pub fn null<T>() -> PmemConstVirtualPtr<T> {
+    PmemConstVirtualPtr::null()
+}
+
+pub fn null_mut<T>() -> PmemMutVirtualPtr<T> {
+    PmemMutVirtualPtr::null()
+}
+
 
 /// Copies `count * size_of<T>` bytes from `src` to `pmemdest`. The source and destination may overlap.
 ///
