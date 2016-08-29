@@ -22,6 +22,7 @@ use pmap::PersistentMap;
 #[derive(Copy, Clone)]
 pub struct PmemConstVirtualPtr<T: ?Sized> {
     poolid: usize,
+    /// Offset in bytes
     offset: usize,
     _t: PhantomData<T>,
 }
@@ -83,6 +84,7 @@ impl<T> ::std::fmt::Debug for PmemConstVirtualPtr<T> {
 #[derive(Copy, Clone)]
 pub struct PmemMutVirtualPtr<T: ?Sized> {
     poolid: usize,
+    /// Offset in bytes
     offset: usize,
     _t: PhantomData<T>,
 }
@@ -163,7 +165,7 @@ impl<T> PmemConstPtr<T> {
         if self.is_null() {
             ::std::ptr::null()
         } else {
-            self.pool.offset(self.virt.offset as isize) as *const T
+            (self.pool as *const u8).offset(self.virt.offset as isize) as *const T
         }
     }
 
@@ -223,7 +225,7 @@ impl<T> PmemMutPtr<T> {
         if self.is_null() {
             ::std::ptr::null_mut()
         } else {
-            self.pool.offset(self.virt.offset as isize) as *mut T
+            (self.pool as *mut u8).offset(self.virt.offset as isize) as *mut T
         }
     }
 
