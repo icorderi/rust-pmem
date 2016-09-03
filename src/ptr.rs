@@ -33,8 +33,6 @@ impl<T: ?Sized> PmemConstVirtualPtr<T> {
         PmemConstVirtualPtr { poolid: poolid, offset: offset, _t: PhantomData }
     }
 
-    pub fn null() -> Self { PmemConstVirtualPtr { poolid: 0, offset: 0, _t: PhantomData } }
-
     pub fn is_null(&self) -> bool { self.poolid == 0 }
 
     pub unsafe fn as_type<U>(&self) -> PmemConstVirtualPtr<U> {
@@ -47,6 +45,8 @@ impl<T: ?Sized> PmemConstVirtualPtr<T> {
 }
 
 impl<T> PmemConstVirtualPtr<T> {
+    pub fn null() -> Self { PmemConstVirtualPtr { poolid: 0, offset: 0, _t: PhantomData } }
+
     pub unsafe fn offset(&self, count: isize) -> Self {
         if self.is_null() {
             PmemConstVirtualPtr::null()
@@ -62,19 +62,25 @@ impl<T> PmemConstVirtualPtr<T> {
     }
 }
 
-impl<T> ::std::fmt::Pointer for PmemConstVirtualPtr<T> {
+impl<T: ?Sized> ::std::fmt::Pointer for PmemConstVirtualPtr<T> {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         write!(f, "{:#x}:{:#x}",self.poolid, self.offset)
     }
 }
 
-impl<T> ::std::fmt::Debug for PmemConstVirtualPtr<T> {
+impl<T: ?Sized> ::std::fmt::Debug for PmemConstVirtualPtr<T> {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         if self.is_null() {
             write!(f, "PmemVirt *const NULL")
         } else {
             write!(f, "PmemVirt *const {{ pool: {:#x}, offset: {:#x} }}", self.poolid, self.offset)
         }
+    }
+}
+
+impl<T> Default for PmemConstVirtualPtr<T> {
+    fn default() -> Self {
+        PmemConstVirtualPtr::null()
     }
 }
 
@@ -95,8 +101,6 @@ impl<T: ?Sized> PmemMutVirtualPtr<T> {
         PmemMutVirtualPtr { poolid: poolid, offset: offset, _t: PhantomData }
     }
 
-    pub fn null() -> Self { PmemMutVirtualPtr { poolid: 0, offset: 0, _t: PhantomData } }
-
     pub fn is_null(&self) -> bool { self.poolid == 0 }
 
     pub unsafe fn as_type<U>(&self) -> PmemMutVirtualPtr<U> {
@@ -108,13 +112,13 @@ impl<T: ?Sized> PmemMutVirtualPtr<T> {
     }
 }
 
-impl<T> ::std::fmt::Pointer for PmemMutVirtualPtr<T> {
+impl<T: ?Sized> ::std::fmt::Pointer for PmemMutVirtualPtr<T> {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         write!(f, "{:#x}:{:#x}",self.poolid, self.offset)
     }
 }
 
-impl<T> ::std::fmt::Debug for PmemMutVirtualPtr<T> {
+impl<T: ?Sized> ::std::fmt::Debug for PmemMutVirtualPtr<T> {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         if self.is_null() {
             write!(f, "PmemVirt *mut NULL")
@@ -125,6 +129,8 @@ impl<T> ::std::fmt::Debug for PmemMutVirtualPtr<T> {
 }
 
 impl<T> PmemMutVirtualPtr<T> {
+    pub fn null() -> Self { PmemMutVirtualPtr { poolid: 0, offset: 0, _t: PhantomData } }
+
     pub unsafe fn offset(&self, count: isize) -> Self {
         if self.is_null() {
             PmemMutVirtualPtr::null()
@@ -137,6 +143,12 @@ impl<T> PmemMutVirtualPtr<T> {
     pub unsafe fn link(&self, pool: &mut PersistentMap) -> PmemMutPtr<T> {
         let new_virt = PmemMutVirtualPtr { poolid: self.poolid, offset: self.offset, _t: self._t };
         PmemMutPtr { virt: new_virt, pool: pool.as_mut_ptr() }
+    }
+}
+
+impl<T> Default for PmemMutVirtualPtr<T> {
+    fn default() -> Self {
+        PmemMutVirtualPtr::null()
     }
 }
 
@@ -161,6 +173,8 @@ impl<T: ?Sized> PmemConstPtr<T> {
 }
 
 impl<T> PmemConstPtr<T> {
+    pub fn null() -> Self { PmemConstPtr { virt: PmemConstVirtualPtr::null(), pool: ::std::ptr::null() } }
+
     pub unsafe fn direct(&self) -> *const T {
         if self.is_null() {
             ::std::ptr::null()
@@ -186,17 +200,23 @@ impl<T> PmemConstPtr<T> {
 
 impl<T> ::std::fmt::Pointer for PmemConstPtr<T> {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "{:p} -> {:p}",self.virt, unsafe { self.direct() })
+        write!(f, "{:p} -> {:p}", self.virt, unsafe { self.direct() })
     }
 }
 
-impl<T> ::std::fmt::Debug for PmemConstPtr<T> {
+impl<T: ?Sized> ::std::fmt::Debug for PmemConstPtr<T> {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         if self.is_null() {
             write!(f, "Pmem *const NULL")
         } else {
             write!(f, "Pmem *const {{ pool: {:#x}, offset: {:#x} }}", self.virt.poolid, self.virt.offset)
         }
+    }
+}
+
+impl<T> Default for PmemConstPtr<T> {
+    fn default() -> Self {
+        PmemConstPtr::null()
     }
 }
 
@@ -221,6 +241,8 @@ impl<T: ?Sized> PmemMutPtr<T> {
 }
 
 impl<T> PmemMutPtr<T> {
+     pub fn null() -> Self { PmemMutPtr { virt: PmemMutVirtualPtr::null(), pool: ::std::ptr::null_mut() } }
+
     pub unsafe fn direct(&self) -> *mut T {
         if self.is_null() {
             ::std::ptr::null_mut()
@@ -257,6 +279,12 @@ impl<T> ::std::fmt::Debug for PmemMutPtr<T> {
         } else {
             write!(f, "Pmem *mut {{ pool: {:#x}, offset: {:#x} }}", self.virt.poolid, self.virt.offset)
         }
+    }
+}
+
+impl<T> Default for PmemMutPtr<T> {
+    fn default() -> Self {
+        PmemMutPtr::null()
     }
 }
 
