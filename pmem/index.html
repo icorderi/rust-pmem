@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `pmem` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, pmem">
+
+    <title>pmem - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'pmem', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>pmem</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-0' class='srclink' href='../src/pmem/src/lib.rs.html#1-193' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'>
+<h1 id='ffi-bindings-to-libpmem' class='section-header'><a href='#ffi-bindings-to-libpmem'>FFI bindings to <strong>libpmem</strong></a></h1>
+<p>Rust bindings for the NVM Library <a href="http://pmem.io">http://pmem.io</a></p>
+
+<p>The <strong>pmem</strong> library provides low level persistent memory support.
+Developers wishing to roll their own persistent memory algorithms will find this library useful,
+but most developers will likely use <strong>pmem-obj</strong> and let that library call <strong>pmem</strong> for them.</p>
+
+<p>The interfaces in <code>pmem</code> are <strong>non-transactional</strong>. Crates like <code>pmem-obj</code> provide transactional
+interfaces by building on these <code>pmem</code> functions.</p>
+
+<blockquote>
+<p>This is <strong>not</strong> an official port of the NVM Library.</p>
+
+<p>The official <strong>libpmem</strong> documentation can be found at: <a href="http://pmem.io/nvml/libpmem/">http://pmem.io/nvml/libpmem/</a></p>
+</blockquote>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='cell/index.html'
+                                  title='pmem::cell'>cell</a></td>
+                           <td class='docblock short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='nodrain/index.html'
+                                  title='pmem::nodrain'>nodrain</a></td>
+                           <td class='docblock short'>
+                                <p>The functions in this section provide optimized copying to persistent memory <em>without</em> draining</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='pmap/index.html'
+                                  title='pmem::pmap'>pmap</a></td>
+                           <td class='docblock short'>
+                                <p>Persistent memory maps</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='ptr/index.html'
+                                  title='pmem::ptr'>ptr</a></td>
+                           <td class='docblock short'>
+                                <p>The functions in this section provide optimized copying to persistent memory</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.check_version.html'
+                                  title='pmem::check_version'>check_version</a></td>
+                           <td class='docblock short'>
+                                <p>Checks the version of the <strong>libpmem</strong> library</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.drain.html'
+                                  title='pmem::drain'>drain</a></td>
+                           <td class='docblock short'>
+                                <p>Waits for any pmem stores to drain from HW buffers</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.errormsg.html'
+                                  title='pmem::errormsg'>errormsg</a></td>
+                           <td class='docblock short'>
+                                <p>Description of the last error</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.flush.html'
+                                  title='pmem::flush'>flush</a></td>
+                           <td class='docblock short'>
+                                <p>Flushes the processor caches</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.has_hw_drain.html'
+                                  title='pmem::has_hw_drain'>has_hw_drain</a></td>
+                           <td class='docblock short'>
+                                <p>Wether or not the machine supports an explicit hardware drain instruction for persistent memory.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.is_pmem.html'
+                                  title='pmem::is_pmem'>is_pmem</a></td>
+                           <td class='docblock short'>
+                                <p>Checks if an entire object consists of persistent memory
+If <code>true</code> then it is safe to use <code>persist(1)</code> and other related functions to make changes durable for that memory range.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.msync.html'
+                                  title='pmem::msync'>msync</a></td>
+                           <td class='docblock short'>
+                                <p>Forces any changes in an object to be stored durably.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.msync_unsized.html'
+                                  title='pmem::msync_unsized'>msync_unsized</a></td>
+                           <td class='docblock short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.persist.html'
+                                  title='pmem::persist'>persist</a></td>
+                           <td class='docblock short'>
+                                <p>Force an object to be stored durably in persistent memory.</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "pmem";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

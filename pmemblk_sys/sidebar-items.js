@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PMEMblkpool",""]],"fn":[["pmemblk_bsize",""],["pmemblk_check",""],["pmemblk_check_version",""],["pmemblk_close",""],["pmemblk_create",""],["pmemblk_errormsg",""],["pmemblk_nblock",""],["pmemblk_open",""],["pmemblk_read",""],["pmemblk_set_error",""],["pmemblk_set_zero",""],["pmemblk_write",""]],"static":[["PMEMBLK_MIN_POOL",""]]});

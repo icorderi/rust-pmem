@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["check_version","Checks the version of the **libpmemblk** library"]],"mod":[["blkpool",""]]});

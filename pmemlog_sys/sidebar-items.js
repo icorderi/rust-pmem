@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PMEMlogpool",""]],"fn":[["pmemlog_append",""],["pmemlog_appendv",""],["pmemlog_close",""],["pmemlog_create",""],["pmemlog_nbyte",""],["pmemlog_open",""],["pmemlog_rewind",""],["pmemlog_tell",""],["pmemlog_walk",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PMEMobjpool",""]],"fn":[["pmemobj_close",""],["pmemobj_create",""],["pmemobj_drain",""],["pmemobj_errormsg",""],["pmemobj_flush",""],["pmemobj_memcpy_persist",""],["pmemobj_memset_persist",""],["pmemobj_open",""],["pmemobj_persist",""]]});
